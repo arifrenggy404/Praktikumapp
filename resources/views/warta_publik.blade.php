@@ -72,6 +72,25 @@
 </header>
 
 <main class="container my-5 py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-5 pb-3 border-bottom">
+        <h3 class="serif mb-3 mb-md-0">Arsip Warta</h3>
+        <div style="width: 100%; max-width: 400px;">
+            <form action="{{ route('public.warta') }}" method="GET" class="d-flex gap-2">
+                <div class="input-group shadow-sm rounded overflow-hidden">
+                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-search"></i></span>
+                    <input type="text" name="search" class="form-control border-start-0 py-2" placeholder="Cari judul warta jemaat..." value="{{ request('search') }}">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if(request('search'))
+        <div class="mb-4">
+            <span class="text-muted">Hasil pencarian untuk: <strong>"{{ request('search') }}"</strong></span>
+            <a href="{{ route('public.warta') }}" class="ms-2 text-decoration-none small">Lihat Semua</a>
+        </div>
+    @endif
+
     <div class="row g-4">
         @forelse($wartas as $w)
             <div class="col-md-4 col-lg-3">

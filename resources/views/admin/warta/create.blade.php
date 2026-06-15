@@ -34,8 +34,8 @@
                     <div class="mb-4">
                         <label for="file_warta" class="form-label small fw-bold text-muted text-uppercase">Pilih File PDF</label>
                         <input type="file" class="form-control @error('file_warta') is-invalid @enderror" id="file_warta" name="file_warta" accept="application/pdf" required>
-                        <div class="form-text text-info small mt-2">
-                            <i class="fas fa-info-circle me-1"></i> File harus berformat PDF. Tidak ada batasan ukuran dari sistem (dibatasi oleh server).
+                        <div class="form-text text-danger small mt-2">
+                            <i class="fas fa-exclamation-triangle me-1"></i> File harus berformat PDF. Maksimal ukuran file adalah <strong>2MB</strong>.
                         </div>
                         @error('file_warta')
                             <div class="invalid-feedback">{{ $message }}</div>

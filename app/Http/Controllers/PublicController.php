@@ -23,11 +23,17 @@ class PublicController extends Controller
     /**
      * Halaman Jadwal Pelayanan Ibadah
      */
-    public function jadwal()
+    public function jadwal(Request $request)
     {
         $jadwalTerbaru = JadwalPelayanan::with('pelayan')
+                            ->when($request->search, function($query, $search) {
+                                return $query->where(function($q) use ($search) {
+                                    $q->where('nama_ibadah', 'like', "%{$search}%")
+                                      ->orWhere('lokasi_ibadah', 'like', "%{$search}%");
+                                });
+                            })
                             ->orderBy('tanggal_waktu', 'asc')
-                            ->take(10)
+                            ->take(20)
                             ->get();
         
         $wartaList = Warta::orderBy('tanggal_terbit', 'desc')->take(5)->get();

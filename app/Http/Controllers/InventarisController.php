@@ -4,16 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventaris;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB; // Menggunakan DB facade untuk melakukan JOIN tabel secara cepat
+use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InventarisController extends Controller
 {
     /**
+     * Cetak Data Inventaris ke PDF
+     */
+    public function cetakPdf(Request $request)
+    {
+        $inventaris = Inventaris::with('kondisi')
+            ->when($request->search, function($query, $search) {
+                return $query->where(function($q) use ($search) {
+                    $q->where('nama_barang', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('nama_barang', 'asc')
+            ->get();
+            
+        $pdf = Pdf::loadView('admin.inventaris.pdf', compact('inventaris'));
+        return $pdf->download('laporan-inventaris-aset.pdf');
+    }
+
+    /**
      * 1. TAMPILKAN SEMUA DATA INVENTARIS
      */
-    public function index()
+    public function index(Request $request)
     {
         $assets = Inventaris::with('kondisi')
+            ->when($request->search, function($query, $search) {
+                return $query->where(function($q) use ($search) {
+                    $q->where('nama_barang', 'like', "%{$search}%");
+                });
+            })
             ->orderBy('nama_barang', 'asc')
             ->get();
 

@@ -5,15 +5,42 @@ namespace App\Http\Controllers;
 use App\Models\Pelayan;
 use App\Models\Jemaat;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PelayanController extends Controller
 {
     /**
+     * Cetak Data Pelayan ke PDF
+     */
+    public function cetakPdf(Request $request)
+    {
+        $pelayans = Pelayan::with('jemaat')
+            ->when($request->search, function($query, $search) {
+                return $query->whereHas('jemaat', function($q) use ($search) {
+                    $q->where('nama_lengkap', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('jabatan')
+            ->get();
+            
+        $pdf = Pdf::loadView('admin.pelayan.pdf', compact('pelayans'));
+        return $pdf->download('laporan-data-pelayan.pdf');
+    }
+
+    /**
      * Menampilkan daftar pelayan gereja.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pelayans = Pelayan::with('jemaat')->orderBy('jabatan')->get();
+        $pelayans = Pelayan::with('jemaat')
+            ->when($request->search, function($query, $search) {
+                return $query->whereHas('jemaat', function($q) use ($search) {
+                    $q->where('nama_lengkap', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('jabatan')
+            ->get();
+            
         return view('admin.pelayan.index', compact('pelayans'));
     }
 

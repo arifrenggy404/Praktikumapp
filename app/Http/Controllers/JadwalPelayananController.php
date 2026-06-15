@@ -7,16 +7,54 @@ use App\Models\Jemaat;
 use App\Models\Warta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class JadwalPelayananController extends Controller
 {
     /**
+     * Cetak Jadwal Pelayanan ke PDF
+     */
+    public function cetakPdf(Request $request)
+    {
+        $jadwals = JadwalPelayanan::with('pelayan')
+            ->when($request->search, function($query, $search) {
+                return $query->where(function($q) use ($search) {
+                    $q->where('nama_ibadah', 'like', "%{$search}%")
+                      ->orWhere('lokasi_ibadah', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('tanggal_waktu', 'asc')
+            ->get();
+        
+        // Transform data untuk memudahkan tampilan di PDF
+        $jadwals->transform(function($jadwal) {
+            $dt = Carbon::parse($jadwal->tanggal_waktu);
+            $jadwal->tanggal_ibadah = $dt->toDateString();
+            $jadwal->jam_mulai = $dt->toTimeString();
+            return $jadwal;
+        });
+
+        $pdf = Pdf::loadView('admin.jadwal.pdf', compact('jadwals'));
+        return $pdf->download('laporan-jadwal-ibadah.pdf');
+    }
+
+    /**
      * 1. TAMPILKAN SEMUA JADWAL IBADAH
      */
-    public function index()
+    public function index(Request $request)
     {
         // Mengambil jadwal beserta data jemaat yang menjadi pelayan lewat relasi Many-to-Many
-        $jadwals = JadwalPelayanan::with('pelayan')->orderBy('tanggal_waktu', 'asc')->get();
+        $jadwals = JadwalPelayanan::with('pelayan')
+            ->when($request->search, function($query, $search) {
+                return $query->where(function($q) use ($search) {
+                    $q->where('nama_ibadah', 'like', "%{$search}%")
+                      ->orWhere('lokasi_ibadah', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('tanggal_waktu', 'asc')
+            ->get();
+            
         return view('admin.jadwal.index', compact('jadwals'));
     }
 
@@ -57,7 +95,7 @@ class JadwalPelayananController extends Controller
         if ($request->hasFile('warta_digital')) {
             $file = $request->file('warta_digital');
             $namaFileWarta = 'warta-' . time() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('public/warta', $namaFileWarta);
+            $file->storeAs('warta', $namaFileWarta, 'public');
         }
 
         // Simpan data utama jadwal
@@ -119,12 +157,12 @@ class JadwalPelayananController extends Controller
         if ($request->hasFile('warta_digital')) {
             // Hapus file lama jika ada
             if ($jadwal->warta_digital) {
-                Storage::delete('public/warta/' . $jadwal->warta_digital);
+                Storage::disk('public')->delete('warta/' . $jadwal->warta_digital);
             }
 
             $file = $request->file('warta_digital');
             $namaFileWarta = 'warta-' . time() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('public/warta', $namaFileWarta);
+            $file->storeAs('warta', $namaFileWarta, 'public');
         }
 
         // Update data utama jadwal
@@ -154,7 +192,7 @@ class JadwalPelayananController extends Controller
         
         // Hapus file warta jika ada
         if ($jadwal->warta_digital) {
-            Storage::delete('public/warta/' . $jadwal->warta_digital);
+            Storage::disk('public')->delete('warta/' . $jadwal->warta_digital);
         }
 
         // Putus hubungan di tabel pivot pelayan_jadwals terlebih dahulu demi menjaga integritas relasi FK

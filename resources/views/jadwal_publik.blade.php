@@ -94,7 +94,25 @@
 <main class="container my-5 py-4">
     <div class="row g-5">
         <div class="col-lg-8">
-            <h3 class="serif mb-4 pb-2 border-bottom">Ibadah Mendatang</h3>
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+                <h3 class="serif mb-0">Ibadah Mendatang</h3>
+                <div style="max-width: 300px;">
+                    <form action="{{ route('public.jadwal') }}" method="GET" class="d-flex gap-2">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
+                            <input type="text" name="search" class="form-control border-start-0" placeholder="Cari jadwal..." value="{{ request('search') }}">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            @if(request('search'))
+                <div class="mb-4">
+                    <span class="text-muted">Hasil pencarian untuk: <strong>"{{ request('search') }}"</strong></span>
+                    <a href="{{ route('public.jadwal') }}" class="ms-2 text-decoration-none small">Lihat Semua</a>
+                </div>
+            @endif
+
             @forelse($jadwalTerbaru as $jadwal)
                 <div class="jadwal-card">
                     <div class="row g-0 align-items-center">

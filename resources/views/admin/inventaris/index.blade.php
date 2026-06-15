@@ -9,9 +9,14 @@
         <h4 class="fw-bold text-dark mb-1">Daftar Aset Gereja</h4>
         <p class="text-muted small mb-0">Kelola inventaris sarana dan prasarana jemaat.</p>
     </div>
-    <a href="{{ route('inventaris.create') }}" class="btn btn-primary fw-bold px-4">
-        <i class="fas fa-plus me-2"></i> Tambah Inventaris
-    </a>
+    <div class="d-flex gap-2">
+        <a href="{{ route('inventaris.pdf', ['search' => request('search')]) }}" class="btn btn-outline-danger fw-bold px-3">
+            <i class="fas fa-file-pdf me-2"></i> Cetak PDF
+        </a>
+        <a href="{{ route('inventaris.create') }}" class="btn btn-primary fw-bold px-4">
+            <i class="fas fa-plus me-2"></i> Tambah Inventaris
+        </a>
+    </div>
 </div>
 
 @if(session('success'))
@@ -19,6 +24,24 @@
         <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
     </div>
 @endif
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form action="{{ route('inventaris.index') }}" method="GET" class="d-flex gap-2">
+            <div class="input-group shadow-sm">
+                <span class="input-group-text bg-white border-end-0 rounded-start-4 ps-3">
+                    <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="text" name="search" class="form-control border-start-0 py-2" 
+                    placeholder="Cari nama barang..." value="{{ request('search') }}">
+            </div>
+            <button type="submit" class="btn btn-primary fw-bold px-4 rounded-4">Cari</button>
+            @if(request('search'))
+                <a href="{{ route('inventaris.index') }}" class="btn btn-light fw-bold px-4 rounded-4 border">Reset</a>
+            @endif
+        </form>
+    </div>
+</div>
 
 <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
     <div class="card-body p-0">

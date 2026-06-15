@@ -28,17 +28,32 @@ Route::middleware(['auth'])->group(function () {
     
     Route::resource('jemaat', JemaatController::class);
     Route::get('/jemaat-search', [JemaatController::class, 'search'])->name('jemaat.search');
+    Route::get('/jemaat-pdf', [JemaatController::class, 'cetakPdf'])->name('jemaat.pdf');
+
     Route::resource('jadwal', JadwalPelayananController::class);
+    Route::get('/jadwal-pdf', [JadwalPelayananController::class, 'cetakPdf'])->name('jadwal.pdf');
+
     Route::resource('inventaris', InventarisController::class);
+    Route::get('/inventaris-pdf', [InventarisController::class, 'cetakPdf'])->name('inventaris.pdf');
+
     Route::resource('pelayan', PelayanController::class);
+    Route::get('/pelayan-pdf', [PelayanController::class, 'cetakPdf'])->name('pelayan.pdf');
+
     Route::resource('warta', WartaController::class);
+    Route::get('/warta-pdf', [WartaController::class, 'cetakPdf'])->name('warta.pdf');
 });
 
 // --- SISTEM ---
 Route::get('/unduh-warta/{filename}', function ($filename) {
-    $path = storage_path('app/public/warta/' . $filename);
-    if (!file_exists($path)) {
-        abort(404, 'File Warta Jemaat tidak ditemukan.');
+    $fullPath = 'warta/' . $filename;
+    
+    if (!Storage::disk('public')->exists($fullPath)) {
+        \Log::error("Download gagal: File tidak ditemukan di storage/app/public/" . $fullPath);
+        abort(404, 'Maaf, file Warta Jemaat tidak ditemukan di server.');
     }
-    return response()->download($path);
-})->name('warta.download');
+
+    return Storage::disk('public')->download($fullPath, $filename, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+    ]);
+})->where('filename', '.*')->name('warta.download');

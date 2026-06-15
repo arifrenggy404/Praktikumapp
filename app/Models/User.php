@@ -5,9 +5,12 @@ namespace App\Models;
 // KOREKSI DI SINI: Gunakan Authenticatable dari Foundation, bukan Model biasa
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
+    use HasFactory;
+
     // Nama tabel di database MySQL Anda
     protected $table = 'users';
 

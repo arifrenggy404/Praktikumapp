@@ -4,9 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Jemaat;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class JemaatController extends Controller
 {
+    /**
+     * Cetak Data Jemaat ke PDF
+     */
+    public function cetakPdf(Request $request)
+    {
+        $query = Jemaat::query();
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                  ->orWhere('alamat_domisili', 'like', "%{$search}%");
+            });
+        }
+
+        $jemaats = $query->orderBy('nama_lengkap', 'asc')->get();
+        $pdf = Pdf::loadView('admin.jemaat.pdf', compact('jemaats'));
+        return $pdf->download('laporan-data-jemaat.pdf');
+    }
+
     // 1. TAMPILKAN SEMUA DATA JEMAAT
     public function index(Request $request)
     {

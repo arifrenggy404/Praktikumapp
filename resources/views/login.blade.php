@@ -112,6 +112,16 @@
                     </div>
 
                     <div class="card-body p-4 p-lg-5">
+                        @if ($errors->any())
+                            <div class="alert alert-danger border-0 shadow-sm mb-4" role="alert">
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <form action="/login" method="POST">
                             @csrf
                             
