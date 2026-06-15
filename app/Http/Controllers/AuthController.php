@@ -31,14 +31,19 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
+        \Log::info('Login attempt for username: ' . $credentials['username']);
+
         // 2. Coba cocokkan kredensial ke database MySQL (Otomatis memverifikasi hash password Bcrypt)
         if (Auth::attempt($credentials)) {
+            \Log::info('Login successful for username: ' . $credentials['username']);
             // Jika sukses, buat ulang session untuk mencegah serangan Session Fixation
             $request->session()->regenerate();
 
             // Dialihkan ke rute proteksi dashboard admin
             return redirect()->intended('dashboard');
         }
+
+        \Log::warning('Login failed for username: ' . $credentials['username']);
 
         // 3. Jika gagal cocok, kembalikan ke halaman login dengan pesan error (Sesuai Activity Diagram)
         return back()->withErrors([
