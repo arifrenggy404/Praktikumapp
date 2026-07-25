@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gks_kandara_app
+    restart: always
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    environment:
+      APP_NAME: "${APP_NAME:-SIM GKS Kandara}"
+      APP_ENV: "${APP_ENV:-production}"
+      APP_KEY: "${APP_KEY:-base64:Xv9pE/6g8K8nQ+k3QYgX+s1r2u3v4w5x6y7z8A9B0C1=}"
+      APP_DEBUG: "${APP_DEBUG:-false}"
+      APP_URL: "${APP_URL:-http://localhost:8080}"
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: "${DB_DATABASE:-praktikumapp}"
+      DB_USERNAME: "${DB_USERNAME:-root}"
+      DB_PASSWORD: "${DB_PASSWORD:-rootpassword}"
+      RUN_MIGRATIONS: "true"
+    depends_on:
+      - db
+    networks:
+      - gks_network
+
+  db:
+    image: mysql:8.0
+    container_name: gks_kandara_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: "${DB_DATABASE:-praktikumapp}"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD:-rootpassword}"
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - gks_network
+
+networks:
+  gks_network:
+    driver: bridge
+
+volumes:
+  db_data:

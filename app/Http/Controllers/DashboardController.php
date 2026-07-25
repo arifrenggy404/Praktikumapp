@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jemaat;
+use App\Models\Galeri;
 use App\Models\Inventaris;
 use App\Models\JadwalPelayanan;
+use App\Models\Jemaat;
+use App\Models\Pendaftaran;
+use App\Models\Pengumuman;
+use App\Models\Renungan;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -14,18 +18,29 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // 1. PERBAIKAN DI BARIS INI: Mengubah 'Mengitung' menjadi 'Menghitung'
-        // Menghitung total baris data pada tabel jemaats
         $totalJemaat = Jemaat::count();
-
-        // 2. Menghitung total akumulasi unit barang pada tabel inventaris
-        // Menggunakan fungsi sum() untuk menjumlahkan isi dari kolom 'jumlah_kuantitas'
         $totalInventaris = Inventaris::sum('jumlah_kuantitas') ?? 0;
-
-        // 3. Menghitung total baris data pada tabel jadwal_pelayanans
         $totalJadwal = JadwalPelayanan::count();
 
-        // 4. Melempar semua data statistik ke dalam view 'admin.dashboard' menggunakan compact()
-        return view('admin.dashboard', compact('totalJemaat', 'totalInventaris', 'totalJadwal'));
+        // Statistik Fitur Baru
+        $totalPendaftaran = Pendaftaran::count();
+        $pendaftaranPending = Pendaftaran::where('status', 'Pending')->count();
+        $totalRenungan = Renungan::count();
+        $totalPengumuman = Pengumuman::count();
+        $totalGaleri = Galeri::count();
+
+        $pendaftaranTerbaru = Pendaftaran::orderBy('created_at', 'desc')->take(5)->get();
+
+        return view('dashboard', compact(
+            'totalJemaat', 
+            'totalInventaris', 
+            'totalJadwal',
+            'totalPendaftaran',
+            'pendaftaranPending',
+            'totalRenungan',
+            'totalPengumuman',
+            'totalGaleri',
+            'pendaftaranTerbaru'
+        ));
     }
 }

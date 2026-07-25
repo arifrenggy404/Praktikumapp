@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -15,19 +16,17 @@ class Jemaat extends Model
 
     protected $table = 'jemaats';
     protected $fillable = [
-        'kartu_keluarga_id', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 
+        'kartu_keluarga_id', 'nama_lengkap', 'jenis_kelamin', 'peran_keluarga', 'tempat_lahir', 'tanggal_lahir', 
         'alamat_domisili', 'no_hp', 'status_baptis', 'status_sidi', 
         'tanggal_baptis', 'tanggal_sidi', 'nama_orang_tua', 'file_dokumen'
     ];
 
-    // Accessor Otomatis Hitung Kategori Usia (0-16 Anak, 17-50 Pemuda, >50 Lansia)
+    // Accessor Otomatis Hitung Kategori Usia
     protected function kategoriUsia(): Attribute
     {
         return Attribute::make(
             get: function () {
                 $usia = Carbon::parse($this->tanggal_lahir)->age;
-                
-               
                 if ($usia <= 16) return 'Anak & Remaja';
                 if ($usia >= 17 && $usia < 50) return 'Pemuda / Dewasa';
                 return 'Lansia';

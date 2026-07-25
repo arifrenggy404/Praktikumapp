@@ -244,8 +244,8 @@
                 <img src="{{ asset('images/logo-gks.png') }}" alt="Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
             </div>
             <div class="d-flex flex-column">
-                <span class="text-white fw-bold" style="line-height: 1.1; font-size: 1.1rem; letter-spacing: 0.5px;">SIM GKS</span>
-                <span class="text-white-50" style="font-size: 9px; letter-spacing: 1px; font-weight: 700; text-transform: uppercase;">Kandara - Sekretariat</span>
+                <span class="text-white fw-bold" style="line-height: 1.1; font-size: 1.1rem; letter-spacing: 0.5px;">{{ $setting->singkatan_gereja ?? 'SIM GKS' }}</span>
+                <span class="text-white-50" style="font-size: 9px; letter-spacing: 1px; font-weight: 700; text-transform: uppercase;">Sekretariat Jemaat</span>
             </div>
         </a>
     </div>
@@ -265,14 +265,31 @@
         </a>
         
         <div class="sidebar-label">Operasional</div>
-        <a href="{{ route('jadwal.index') }}" class="{{ Request::is('jadwal*') ? 'active' : '' }}">
+        <a href="{{ route('jadwal.index') }}" class="{{ Request::is('dashboard/jadwal*') ? 'active' : '' }}">
             <i class="fas fa-calendar-alt"></i> Jadwal Ibadah
         </a>
-        <a href="{{ route('warta.index') }}" class="{{ Request::is('warta*') ? 'active' : '' }}">
+        <a href="{{ route('warta.index') }}" class="{{ Request::is('dashboard/warta*') ? 'active' : '' }}">
             <i class="fas fa-file-invoice"></i> Warta Jemaat
         </a>
-        <a href="{{ route('inventaris.index') }}" class="{{ Request::is('inventaris*') ? 'active' : '' }}">
+        <a href="{{ route('inventaris.index') }}" class="{{ Request::is('dashboard/inventaris*') ? 'active' : '' }}">
             <i class="fas fa-boxes"></i> Inventaris Aset
+        </a>
+
+        <div class="sidebar-label">Layanan & Konten Web</div>
+        <a href="{{ route('admin.pendaftaran.index') }}" class="{{ Request::is('dashboard/pendaftaran*') ? 'active' : '' }}">
+            <i class="fas fa-file-signature"></i> Pendaftaran Online
+        </a>
+        <a href="{{ route('admin.renungan.index') }}" class="{{ Request::is('dashboard/renungan*') ? 'active' : '' }}">
+            <i class="fas fa-book-open"></i> Renungan & Khotbah
+        </a>
+        <a href="{{ route('admin.pengumuman.index') }}" class="{{ Request::is('dashboard/pengumuman*') ? 'active' : '' }}">
+            <i class="fas fa-bullhorn"></i> Pengumuman Digital
+        </a>
+        <a href="{{ route('admin.galeri.index') }}" class="{{ Request::is('dashboard/galeri*') ? 'active' : '' }}">
+            <i class="fas fa-images"></i> Galeri Foto
+        </a>
+        <a href="{{ route('admin.pengaturan.index') }}" class="{{ Request::is('dashboard/pengaturan*') ? 'active' : '' }}">
+            <i class="fas fa-cog"></i> Pengaturan Konten Web
         </a>
 
         <div class="mt-5 pt-4">
