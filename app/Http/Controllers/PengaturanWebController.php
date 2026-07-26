@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PengaturanWeb;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PengaturanWebController extends Controller
 {
@@ -49,7 +50,7 @@ class PengaturanWebController extends Controller
             'nama_gereja' => 'required|string|max:255',
             'singkatan_gereja' => 'required|string|max:100',
             'tagline_gereja' => 'required|string|max:255',
-            'beranda_bg_foto' => 'nullable|image|mimes:jpeg,png,jpg|max:4096',
+            'beranda_bg_foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'sambutan_nama' => 'required|string|max:255',
             'sambutan_jabatan' => 'required|string|max:255',
             'sambutan_teks' => 'required|string',
@@ -66,14 +67,20 @@ class PengaturanWebController extends Controller
             'pj_komisi_pemuda' => 'required|string|max:255',
             'pj_komisi_wanita' => 'required|string|max:255',
             'pj_komisi_lansia' => 'required|string|max:255',
-            'sambutan_foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'sambutan_foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
         if ($request->hasFile('beranda_bg_foto')) {
+            if ($setting->beranda_bg_foto && Storage::disk('public')->exists($setting->beranda_bg_foto)) {
+                Storage::disk('public')->delete($setting->beranda_bg_foto);
+            }
             $validated['beranda_bg_foto'] = $request->file('beranda_bg_foto')->store('pengaturan', 'public');
         }
 
         if ($request->hasFile('sambutan_foto')) {
+            if ($setting->sambutan_foto && Storage::disk('public')->exists($setting->sambutan_foto)) {
+                Storage::disk('public')->delete($setting->sambutan_foto);
+            }
             $validated['sambutan_foto'] = $request->file('sambutan_foto')->store('pengaturan', 'public');
         }
 

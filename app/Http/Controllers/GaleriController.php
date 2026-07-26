@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Galeri;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class GaleriController extends Controller
 {
@@ -30,7 +31,7 @@ class GaleriController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'kategori' => 'required|in:Natal,Paskah,Bakti Sosial,Ibadah,Pemuda,Lainnya',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'deskripsi' => 'nullable|string',
             'tanggal_kegiatan' => 'required|date',
         ]);
@@ -54,7 +55,7 @@ class GaleriController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'kategori' => 'required|in:Natal,Paskah,Bakti Sosial,Ibadah,Pemuda,Lainnya',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'deskripsi' => 'nullable|string',
             'tanggal_kegiatan' => 'required|date',
         ]);
@@ -67,6 +68,9 @@ class GaleriController extends Controller
         ];
 
         if ($request->hasFile('gambar')) {
+            if ($galeri->gambar && Storage::disk('public')->exists($galeri->gambar)) {
+                Storage::disk('public')->delete($galeri->gambar);
+            }
             $data['gambar'] = $request->file('gambar')->store('galeri', 'public');
         }
 
@@ -78,6 +82,9 @@ class GaleriController extends Controller
     public function destroy($id)
     {
         $galeri = Galeri::findOrFail($id);
+        if ($galeri->gambar && Storage::disk('public')->exists($galeri->gambar)) {
+            Storage::disk('public')->delete($galeri->gambar);
+        }
         $galeri->delete();
 
         return redirect()->back()->with('success', 'Foto galeri berhasil dihapus.');

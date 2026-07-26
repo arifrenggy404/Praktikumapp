@@ -12,7 +12,7 @@
         }
 
         .hero-section { 
-            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(30, 58, 138, 0.85)), url("{{ !empty($setting->beranda_bg_foto) ? asset('storage/' . $setting->beranda_bg_foto) : asset('images/latar-beranda.jpg') }}");
+            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(30, 58, 138, 0.85)), url("{{ !empty($setting->beranda_bg_foto) ? (\Illuminate\Support\Str::startsWith($setting->beranda_bg_foto, ['http://', 'https://']) ? $setting->beranda_bg_foto : asset('storage/' . $setting->beranda_bg_foto)) : asset('images/latar-beranda.jpg') }}");
             background-size: cover;
             background-position: center;
             color: white; 
@@ -149,7 +149,7 @@
             <div class="col-lg-5">
                 <div class="card card-pastor p-4 text-center">
                     <div class="mx-auto mb-3 rounded-circle overflow-hidden shadow" style="width: 140px; height: 140px; border: 4px solid var(--church-gold);">
-                        <img src="{{ !empty($setting->sambutan_foto) ? asset('storage/' . $setting->sambutan_foto) : 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop' }}" alt="Foto Pendeta" style="width: 100%; height: 100%; object-fit: cover;">
+                        <img src="{{ !empty($setting->sambutan_foto) ? (\Illuminate\Support\Str::startsWith($setting->sambutan_foto, ['http://', 'https://']) ? $setting->sambutan_foto : asset('storage/' . $setting->sambutan_foto)) : asset('images/foto-salib.jpg') }}" alt="Foto Pendeta" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <h4 class="serif fw-bold text-dark mb-1">{{ $setting->sambutan_nama ?? 'Pdt. Andreas, S.Th' }}</h4>
                     <p class="text-warning fw-bold small mb-3">{{ $setting->sambutan_jabatan ?? 'Pendeta Jemaat' }}</p>

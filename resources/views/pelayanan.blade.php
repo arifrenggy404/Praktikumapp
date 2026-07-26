@@ -21,7 +21,7 @@
                 <div class="col-md-4 col-sm-6">
                     <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-center p-4 bg-white border-top border-4 border-warning">
                         <div class="mx-auto mb-3 rounded-circle overflow-hidden shadow" style="width: 100px; height: 100px;">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop" class="w-100 h-100" style="object-fit: cover;" alt="Pelayan">
+                            <img src="{{ asset('images/foto-salib.jpg') }}" class="w-100 h-100" style="object-fit: cover;" alt="Pelayan">
                         </div>
                         <h5 class="fw-bold text-dark mb-1">{{ $p->jemaat->nama_lengkap ?? 'Pelayan Jemaat' }}</h5>
                         <span class="badge bg-warning text-dark px-3 py-1 fw-bold rounded-pill mb-2">{{ $p->jabatan }}</span>

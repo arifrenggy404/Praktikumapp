@@ -96,11 +96,11 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">Foto Background Header Beranda (Opsional)</label>
                         <input type="file" name="beranda_bg_foto" class="form-control" accept="image/*">
-                        <small class="text-muted">Pilih file gambar (JPG/PNG). Kosongkan jika ingin menggunakan gambar default.</small>
+                        <small class="text-muted">Pilih file gambar (JPG/PNG/WEBP). Kosongkan jika ingin menggunakan gambar default.</small>
                         @if(!empty($setting->beranda_bg_foto))
                             <div class="mt-2">
                                 <small class="text-success fw-bold"><i class="fas fa-image me-1"></i> Background Saat Ini:</small>
-                                <img src="{{ asset('storage/' . $setting->beranda_bg_foto) }}" class="img-thumbnail d-block mt-1" style="max-height: 100px;">
+                                <img src="{{ \Illuminate\Support\Str::startsWith($setting->beranda_bg_foto, ['http://', 'https://']) ? $setting->beranda_bg_foto : asset('storage/' . $setting->beranda_bg_foto) }}" class="img-thumbnail d-block mt-1" style="max-height: 100px;">
                             </div>
                         @endif
                     </div>
@@ -125,6 +125,12 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">Foto Pendeta (Kosongkan jika tidak diubah)</label>
                         <input type="file" name="sambutan_foto" class="form-control" accept="image/*">
+                        @if(!empty($setting->sambutan_foto))
+                            <div class="mt-2">
+                                <small class="text-success fw-bold"><i class="fas fa-image me-1"></i> Foto Pendeta Saat Ini:</small>
+                                <img src="{{ \Illuminate\Support\Str::startsWith($setting->sambutan_foto, ['http://', 'https://']) ? $setting->sambutan_foto : asset('storage/' . $setting->sambutan_foto) }}" class="img-thumbnail d-block mt-1" style="max-height: 100px;">
+                            </div>
+                        @endif
                     </div>
 
                     <div class="mb-3">

@@ -1,4 +1,4 @@
-FROM php:8.3-cli-alpine
+FROM php:8.5-cli-alpine
 
 # Install ekstensi PHP & dependensi sistem yang dibutuhkan Laravel & MySQL
 RUN apk add --no-cache \
