@@ -18,6 +18,11 @@ if [ "$RUN_MIGRATIONS" = "true" ]; then
     php artisan migrate --force
 fi
 
+if [ "$RUN_SEEDER" = "true" ]; then
+    echo "Menjalankan seeder database otomatis..."
+    php artisan db:seed --force
+fi
+
 # 4. Tentukan port dari variabel environment hosting (Render, Railway, Fly.io, Heroku) atau 8080
 PORT=${PORT:-8080}
 echo "Server berjalan di port $PORT..."
