@@ -14,22 +14,25 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Masukkan data fisik Jemaat sebagai Sekretaris terlebih dahulu
-        // Kolom 'id' akan digenerasikan otomatis secara incremental oleh MySQL
-        $jemaat = Jemaat::create([
-            'nama_lengkap' => 'Martina Pauwila',
-            'tempat_lahir' => 'Waingapu',
-            'tanggal_lahir' => '1985-01-01',
-            'alamat_domisili' => 'Kandara',
-            'status_baptis' => 'Sudah',
-            'status_sidi' => 'Sudah',
-        ]);
+        // 1. Masukkan data fisik Jemaat sebagai Sekretaris jika belum ada
+        $jemaat = Jemaat::firstOrCreate(
+            ['nama_lengkap' => 'Martina Pauwila'],
+            [
+                'tempat_lahir' => 'Waingapu',
+                'tanggal_lahir' => '1985-01-01',
+                'alamat_domisili' => 'Kandara',
+                'status_baptis' => 'Sudah',
+                'status_sidi' => 'Sudah',
+            ]
+        );
 
-        // 2. Buat akun login Sekretaris yang mengikat/terelasi ke jemaat_id di atas
-        User::create([
-            'jemaat_id' => $jemaat->id, // Mengambil ID dari jemaat Martina Pauwila otomatis
-            'username' => 'sekretaris_kandara',
-            'password' => Hash::make('rahasia123'), // Mengubah rahasia123 menjadi hash Bcrypt di database
-        ]);
+        // 2. Buat akun login Sekretaris jika belum ada
+        User::firstOrCreate(
+            ['username' => 'sekretaris_kandara'],
+            [
+                'jemaat_id' => $jemaat->id,
+                'password' => Hash::make('rahasia123'),
+            ]
+        );
     }
 }

@@ -9,10 +9,8 @@ class KondisiBarangSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('kondisi_barangs')->insert([
-            ['nama_kondisi' => 'Bagus', 'created_at' => now(), 'updated_at' => now()],
-            ['nama_kondisi' => 'Rusak', 'created_at' => now(), 'updated_at' => now()],
-            ['nama_kondisi' => 'Dibuang', 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        foreach (['Bagus', 'Rusak', 'Dibuang'] as $kondisi) {
+            \App\Models\KondisiBarang::firstOrCreate(['nama_kondisi' => $kondisi]);
+        }
     }
 }
