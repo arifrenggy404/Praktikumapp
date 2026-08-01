@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Sekretariat - GKS Kandara</title>
+    <title>Login Sekretariat - {{ $setting->singkatan_gereja ?? 'GKS Kandara' }}</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -104,11 +104,11 @@
                 
                 <div class="card login-card">
                     <div class="login-header">
-                        <div class="icon-box">
-                            <i class="fas fa-church fa-2x text-white"></i>
+                        <div class="icon-box bg-white p-2 border border-warning shadow-sm">
+                            <img src="{{ asset('images/logo-gks.png') }}" alt="Logo Gereja" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                         </div>
-                        <h4 class="fw-bold mb-1">GKS KANDARA</h4>
-                        <p class="small mb-0 opacity-75">Sistem Admin & Sekretariat</p>
+                        <h4 class="fw-bold mb-1 text-uppercase">{{ $setting->singkatan_gereja ?? 'GKS KANDARA' }}</h4>
+                        <p class="small mb-0 opacity-75">Sistem Admin & Sekretariat - {{ $setting->nama_gereja ?? 'GKS Kandara' }}</p>
                     </div>
 
                     <div class="card-body p-4 p-lg-5">

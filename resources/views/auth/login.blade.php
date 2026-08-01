@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - SIM GKS Kandara</title>
+    <title>Login - SIM {{ $setting->singkatan_gereja ?? 'GKS Kandara' }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -21,8 +21,8 @@
         <div class="col-md-5">
             <div class="card shadow border-0 rounded-3">
                 <div class="card-body p-4 p-sm-5">
-                    <h3 class="card-title text-center mb-2 fw-bold text-primary">SIM GKS KANDARA</h3>
-                    <p class="text-center text-muted mb-4">Sistem Informasi Manajemen Jemaat & Pelayanan</p>
+                    <h3 class="card-title text-center mb-2 fw-bold text-primary">SIM {{ strtoupper($setting->singkatan_gereja ?? 'GKS KANDARA') }}</h3>
+                    <p class="text-center text-muted mb-4">{{ $setting->nama_gereja ?? 'Sistem Informasi Manajemen Jemaat & Pelayanan' }}</p>
                     
                     @if ($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
