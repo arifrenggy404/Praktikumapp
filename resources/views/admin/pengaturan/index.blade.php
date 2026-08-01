@@ -231,6 +231,26 @@
                     </div>
 
                     <div class="mb-3">
+                        <label class="form-label fw-bold">Jam Operasional Sekretariat</label>
+                        <input type="text" name="jam_operasional" value="{{ old('jam_operasional', $setting->jam_operasional ?? 'Senin - Sabtu: 08.00 - 16.00 WITA') }}" class="form-control" placeholder="Contoh: Senin - Sabtu: 08.00 - 16.00 WITA">
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold small text-muted"><i class="fab fa-facebook text-primary me-1"></i> URL Facebook</label>
+                            <input type="url" name="facebook_url" value="{{ old('facebook_url', $setting->facebook_url ?? '') }}" class="form-control form-control-sm" placeholder="https://facebook.com/...">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold small text-muted"><i class="fab fa-instagram text-danger me-1"></i> URL Instagram</label>
+                            <input type="url" name="instagram_url" value="{{ old('instagram_url', $setting->instagram_url ?? '') }}" class="form-control form-control-sm" placeholder="https://instagram.com/...">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold small text-muted"><i class="fab fa-youtube text-danger me-1"></i> URL YouTube</label>
+                            <input type="url" name="youtube_url" value="{{ old('youtube_url', $setting->youtube_url ?? '') }}" class="form-control form-control-sm" placeholder="https://youtube.com/...">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label fw-bold">URL Google Maps Embed</label>
                         <input type="text" name="maps_embed_url" value="{{ old('maps_embed_url', $setting->maps_embed_url ?? '') }}" class="form-control" placeholder="https://www.google.com/maps/embed?...">
                     </div>

@@ -50,7 +50,7 @@
                     <div class="me-3 text-warning"><i class="fas fa-clock fa-2x"></i></div>
                     <div>
                         <h6 class="fw-bold mb-1">Jam Operasional Sekretariat</h6>
-                        <p class="text-secondary small mb-0">Senin - Sabtu: 08.00 - 16.00 WITA<br>Minggu: Pelayanan Kebaktian</p>
+                        <p class="text-secondary small mb-0">{{ $setting->jam_operasional ?? 'Senin - Sabtu: 08.00 - 16.00 WITA' }}</p>
                     </div>
                 </div>
             </div>

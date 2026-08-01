@@ -30,6 +30,10 @@ return new class extends Migration
             $table->text('alamat_gereja');
             $table->string('no_wa_gereja')->default('081234567890');
             $table->string('email_gereja')->default('info@gkskandara.or.id');
+            $table->string('facebook_url')->nullable();
+            $table->string('youtube_url')->nullable();
+            $table->string('instagram_url')->nullable();
+            $table->string('jam_operasional')->nullable()->default('Senin - Sabtu: 08.00 - 16.00 WITA');
             $table->text('maps_embed_url')->nullable();
             
             $table->string('pj_komisi_anak')->default('Ibu Maria & Tim Guru SM');

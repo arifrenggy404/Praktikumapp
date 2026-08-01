@@ -231,9 +231,16 @@
                     "{{ $setting->tagline_gereja ?? 'Bertumbuh dalam Iman, Teguh dalam Pengharapan, dan Melayani dalam Kasih.' }}"
                 </p>
                 <div class="d-flex gap-2 justify-content-center justify-content-lg-start">
-                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $setting->no_wa_gereja ?? '081234567890') }}" target="_blank" class="btn btn-sm btn-outline-light rounded-circle" style="width:36px; height:36px;"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width:36px; height:36px;"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width:36px; height:36px;"><i class="fab fa-youtube"></i></a>
+                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $setting->no_wa_gereja ?? '081234567890') }}" target="_blank" class="btn btn-sm btn-outline-light rounded-circle d-flex align-items-center justify-content-center" style="width:36px; height:36px;" title="WhatsApp Sekretariat"><i class="fab fa-whatsapp"></i></a>
+                    @if(!empty($setting->facebook_url))
+                        <a href="{{ $setting->facebook_url }}" target="_blank" class="btn btn-sm btn-outline-light rounded-circle d-flex align-items-center justify-content-center" style="width:36px; height:36px;" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    @endif
+                    @if(!empty($setting->instagram_url))
+                        <a href="{{ $setting->instagram_url }}" target="_blank" class="btn btn-sm btn-outline-light rounded-circle d-flex align-items-center justify-content-center" style="width:36px; height:36px;" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    @endif
+                    @if(!empty($setting->youtube_url))
+                        <a href="{{ $setting->youtube_url }}" target="_blank" class="btn btn-sm btn-outline-light rounded-circle d-flex align-items-center justify-content-center" style="width:36px; height:36px;" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    @endif
                 </div>
             </div>
 
@@ -255,8 +262,11 @@
                 <h6 class="text-white text-uppercase mb-3 fw-bold" style="letter-spacing: 1px;">Kontak & Alamat</h6>
                 <ul class="list-unstyled small opacity-75 mb-0">
                     <li class="mb-2"><i class="fas fa-map-marker-alt text-warning me-2"></i> {{ $setting->alamat_gereja ?? 'Jl. Kandara, Waingapu, Sumba Timur, NTT' }}</li>
-                    <li class="mb-2"><i class="fab fa-whatsapp text-warning me-2"></i> {{ $setting->no_wa_gereja ?? '081234567890' }} (Sekretariat)</li>
-                    <li class="mb-2"><i class="fas fa-envelope text-warning me-2"></i> {{ $setting->email_gereja ?? 'info@gkskandara.or.id' }}</li>
+                    <li class="mb-2"><i class="fab fa-whatsapp text-warning me-2"></i> <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $setting->no_wa_gereja ?? '081234567890') }}" target="_blank" class="text-white text-decoration-none">{{ $setting->no_wa_gereja ?? '081234567890' }} (Sekretariat)</a></li>
+                    <li class="mb-2"><i class="fas fa-envelope text-warning me-2"></i> <a href="mailto:{{ $setting->email_gereja ?? 'info@gkskandara.or.id' }}" class="text-white text-decoration-none">{{ $setting->email_gereja ?? 'info@gkskandara.or.id' }}</a></li>
+                    @if(!empty($setting->jam_operasional))
+                        <li class="mb-2"><i class="fas fa-clock text-warning me-2"></i> {{ $setting->jam_operasional }}</li>
+                    @endif
                 </ul>
             </div>
         </div>
